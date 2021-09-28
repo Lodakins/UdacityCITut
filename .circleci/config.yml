@@ -11,7 +11,7 @@ jobs:
       - checkout
       - run:
           name: "Print Hello"
-          comman: "echo Hello"
+          command: "echo Hello"
   print-world:
     docker:
       - image: circleci/node:13.8.0
@@ -19,21 +19,16 @@ jobs:
       - checkout
       - run:
           name: "Print World"
-          comman: "echo World"
+          command: "echo World"
   say-hello:
-    # Specify the execution environment.
-    # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
     docker:
       - image: cimg/base:stable
-    # Add steps to the job
-    # See: https://circleci.com/docs/2.0/configuration-reference/#steps
     steps:
       - checkout
       - run:
           name: "Say hello"
           command: "echo Hello, World!"
-# Invoke jobs via workflows
-# See: https://circleci.com/docs/2.0/configuration-reference/#workflows
+
 workflows:
   say-hello-workflow:
     jobs:
