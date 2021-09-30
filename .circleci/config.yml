@@ -22,7 +22,7 @@ jobs:
           command: "echo World"
   say-name:
     docker:
-      - image: circleci/node:13.8.0
+      - image: cimg/base:2020.01
     steps:
       - checkout
       - run:
