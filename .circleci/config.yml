@@ -20,6 +20,15 @@ jobs:
       - run:
           name: "Print World"
           command: "echo World"
+  say-name:
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      - checkout
+      - run:
+          name: "Echo my project settiing env var"
+          command: |
+           "echo $MyName to the world. Thanks"
   say-hello:
     docker:
       - image: cimg/base:stable
