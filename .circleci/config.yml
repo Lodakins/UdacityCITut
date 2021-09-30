@@ -28,7 +28,7 @@ jobs:
       - run:
           name: "Echo my project settiing env var"
           command: |
-           "echo $MyName to the world. Thanks"
+            echo $MyName # to the world. Thanks
   say-hello:
     docker:
       - image: cimg/base:stable
