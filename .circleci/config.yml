@@ -4,63 +4,60 @@ version: 2.1
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
 jobs:
-  print-hello:
-    docker:
-      - image: circleci/node:13.8.0
-    steps:
-      - checkout
-      - run:
-          name: "Print Hello"
-          command: "echo Hello"
-  print-world:
-    docker:
-      - image: circleci/node:13.8.0
-    steps:
-      - checkout
-      - run:
-          name: "Print World"
-          command: "echo World"
+  # say-hello:
+  #   docker:
+  #     - image: cimg/base:stable
+  #   steps:
+  #     - checkout
+  #     - run:
+  #         name: "Say hello"
+  #         command: "echo Hello, World!"
+  # print-hello:
+  #   docker:
+  #     - image: circleci/node:13.8.0
+  #   steps:
+  #     - checkout
+  #     - run:
+  #         name: "Print Hello"
+  #         command: "echo Hello"
+  # print-world:
+  #   docker:
+  #     - image: circleci/node:13.8.0
+  #   steps:
+  #     - checkout
+  #     - run:
+  #         name: "Print World"
+  #         command: "echo World"
   save_hello_world_output:
     docker:
-      - image: cimg/base:2020.01
+      - image: circleci/node:13.8.0
     steps:
       - checkout
       - run:
           name: "Echo my project settiing env var"
-          command: |
-            echo "Text to output here" > output.txt
+          command: echo "Text to output here" > output.txt
       - persist_to_workspace:
-          root: /tmp/dir
+          root: ~/
           paths:
             - output.txt
   print_output_file:
     docker:
-      - image: cimg/base:2020.01
+      - image: circleci/node:13.8.0
     steps:
     - checkout
     - attach_workspace:
-       at: /tmp/dir
+       at: ~/
     - run:
         name: "Print out file persisted to workspace"
-        command: |
-          cat output.txt
-  say-hello:
-    docker:
-      - image: cimg/base:stable
-    steps:
-      - checkout
-      - run:
-          name: "Say hello"
-          command: "echo Hello, World!"
-
+        command: cat ~/output.txt
 workflows:
   say-hello-workflow:
     jobs:
-      - say-hello
-      - print-hello
-      - print-world:
-          requires:
-            - print-hello
+      # - say-hello
+      # - print-hello
+      # - print-world:
+      #     requires:
+      #       - print-hello
       - save_hello_world_output
       - print_output_file:
           requires:
