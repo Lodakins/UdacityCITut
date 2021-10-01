@@ -19,6 +19,15 @@ commands:
       - run: echo  "Hello, This is my circle ci id <<parameters.to>>"
 
 jobs:
+  my_job:
+    <<: *defaults
+    steps:
+      - run: return 1
+      - run:
+          name: on error
+          command: echo "Hello Error!"
+          when: on_fail
+
   say_hello:
     <<: *defaults
     steps:
@@ -71,6 +80,7 @@ jobs:
 workflows:
   say-hello-workflow:
     jobs:
+      - my_job
       # - print_project_env_var
       - say_hello
       - testing_command
