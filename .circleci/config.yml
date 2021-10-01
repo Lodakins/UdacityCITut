@@ -20,7 +20,7 @@ jobs:
       - run:
           name: "Print World"
           command: "echo World"
-  say-name:
+  save_hello_world_output:
     docker:
       - image: cimg/base:2020.01
     steps:
@@ -28,7 +28,22 @@ jobs:
       - run:
           name: "Echo my project settiing env var"
           command: |
-            echo $MyName # to the world. Thanks
+            echo "Text to output here" > output.txt
+      - persist_to_workspace:
+          root: /tmp/dir
+          paths:
+            - output.txt
+  print_output_file:
+    docker:
+      - image: cimg/base:2020.01
+    steps:
+    - checkout
+    - attach_workspace:
+       at: /tmp/dir
+    - run:
+        name: "Print out file persisted to workspace"
+        command: |
+          cat output.txt
   say-hello:
     docker:
       - image: cimg/base:stable
@@ -46,4 +61,7 @@ workflows:
       - print-world:
           requires:
             - print-hello
-      - say-name
+      - save_hello_world_output
+      - print_output_file:
+          requires:
+            - save_hello_world_output
