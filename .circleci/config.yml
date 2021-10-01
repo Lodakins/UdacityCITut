@@ -28,6 +28,12 @@ jobs:
   #     - run:
   #         name: "Print World"
   #         command: "echo World"
+  print_project_env_var:
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      - checkout
+      -  run: echo $MyName . This is my env var
   save_hello_world_output:
     docker:
       - image: circleci/node:13.8.0
@@ -53,12 +59,13 @@ jobs:
 workflows:
   say-hello-workflow:
     jobs:
+      - print_project_env_var
       # - say-hello
       # - print-hello
       # - print-world:
       #     requires:
       #       - print-hello
-      - save_hello_world_output
-      - print_output_file:
-          requires:
-            - save_hello_world_output
+      # - save_hello_world_output
+      # - print_output_file:
+      #     requires:
+      #       - save_hello_world_output
