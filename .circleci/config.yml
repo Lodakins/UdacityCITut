@@ -3,66 +3,77 @@
 version: 2.1
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
+
+defaults: &defaults
+  docker:
+    - image: circleci/node:13.8.0
+
+commands:
+  print_pipeline_id:
+    description: "Just Testing Command"
+    parameters:
+      to:
+        type: string
+        default: "Hello This is my circle ci"
+    steps:
+      - run: echo  "Hello, This is my circle ci id <<parameters.to>>"
+
 jobs:
-  # say-hello:
-  #   docker:
-  #     - image: cimg/base:stable
-  #   steps:
-  #     - checkout
-  #     - run:
-  #         name: "Say hello"
-  #         command: "echo Hello, World!"
-  # print-hello:
-  #   docker:
-  #     - image: circleci/node:13.8.0
-  #   steps:
-  #     - checkout
-  #     - run:
-  #         name: "Print Hello"
-  #         command: "echo Hello"
+  say_hello:
+    <<: *defaults
+    steps:
+      - checkout
+      - run:
+          name: "Print Hello"
+          command: "echo Hello"
+  testing_command:
+    <<: *defaults
+    steps:
+      - checkout
+      - print_pipeline_id:
+          to : $CIRCLE_WORKFLOW_ID
   # print-world:
-  #   docker:
-  #     - image: circleci/node:13.8.0
+  #   <<: *defaults
   #   steps:
   #     - checkout
   #     - run:
   #         name: "Print World"
   #         command: "echo World"
-  print_project_env_var:
-    docker:
-      - image: circleci/node:13.8.0
-    steps:
-      - checkout
-      -  run: 
-          name: "Print out env var"
-          command: echo $Myame . This is my env var
-  save_hello_world_output:
-    docker:
-      - image: circleci/node:13.8.0
-    steps:
-      - checkout
-      - run:
-          name: "Echo my project settiing env var"
-          command: echo "Text to output here" > ~/output.txt
-      - persist_to_workspace:
-          root: ~/
-          paths:
-            - output.txt
-  print_output_file:
-    docker:
-      - image: circleci/node:13.8.0
-    steps:
-    - checkout
-    - attach_workspace:
-       at: ~/
-    - run:
-        name: "Print out file persisted to workspace"
-        command: cat ~/output.txt
+  # print_project_env_var:
+  #   <<: *defaults
+  #   steps:
+  #     - checkout
+  #     -  run: 
+  #         name: "Print out env var"
+  #         command: echo $MyName . This is my env var
+  # save_hello_world_output:
+  #   docker:
+  #     - image: circleci/node:13.8.0
+  #   steps:
+  #     - checkout
+  #     - run:
+  #         name: "Echo my project settiing env var"
+  #         command: echo "Text to output here" > ~/output.txt
+  #     - persist_to_workspace:
+  #         root: ~/
+  #         paths:
+  #           - output.txt
+  # print_output_file:
+  #   docker:
+  #     - image: circleci/node:13.8.0
+  #   steps:
+  #   - checkout
+  #   - attach_workspace:
+  #      at: ~/
+  #   - run:
+  #       name: "Print out file persisted to workspace"
+  #       command: cat ~/output.txt
 workflows:
   say-hello-workflow:
     jobs:
-      - print_project_env_var
-      # - say-hello
+      # - print_project_env_var
+      - say_hello
+      - testing_command
       # - print-hello
       # - print-world:
       #     requires:
