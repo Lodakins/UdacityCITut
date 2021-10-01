@@ -33,7 +33,9 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - checkout
-      -  run: echo $MyName . This is my env var
+      -  run: 
+          name: "Print out env var"
+          command: echo $Myame . This is my env var
   save_hello_world_output:
     docker:
       - image: circleci/node:13.8.0
